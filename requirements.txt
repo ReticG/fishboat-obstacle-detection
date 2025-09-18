@@ -1,0 +1,21 @@
+# OpenCV for image processing and computer vision tasks
+opencv-python
+
+# NumPy for numerical operations
+numpy
+
+# PyTorch for deep learning tasks
+torch
+
+# Torchvision for additional PyTorch utilities
+torchvision
+
+# Ultralytics YOLO for object detection using pre-trained YOLO models
+ultralytics
+
+# Matplotlib for plotting (optional, for visualization in notebooks)
+matplotlib
+
+# Jupyter Notebook for interactive demos (optional)
+jupyter
+
