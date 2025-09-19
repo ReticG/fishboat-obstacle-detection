@@ -1,2 +1,53 @@
-*.png
-*.mp4
+# Python bytecode files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+fishboat-venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# PyCharm specific files
+*.iml
+.idea/
+
+# VSCode specific files
+.vscode/
+
+# MacOS specific files
+.DS_Store
+
+# Logs
+*.log
+
+# Data files
+data/raw/
+data/processed/
+data/raw_video/
+
+# Results folder
+experiments/results/
+
+# Model weights (if you plan to save models, e.g., YOLOv5 weights)
+models/
+
+# Test files
+*.csv
+*.xlsx
+
+# Python package distribution
+*.egg
+*.egg-info/
+dist/
+build/
+*.tar.gz
+
+# Configuration files
+*.config
+*.ini
+
