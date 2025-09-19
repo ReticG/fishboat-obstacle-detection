@@ -19,3 +19,10 @@ matplotlib
 # Jupyter Notebook for interactive demos (optional)
 jupyter
 
+opencv-python
+numpy
+torch
+torchvision
+matplotlib
+scikit-learn
+yolov5
