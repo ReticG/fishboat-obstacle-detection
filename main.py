@@ -1,37 +1,31 @@
-from src.data_loader import StereoDataLoader
-from src.detector.yolo_detector import YOLOv5Detector
 import cv2
+import os
+from src.data_loader import load_kitti_data, load_ground_truth
+from src.stereo.stereo_matching import compute_depth_map
+from src.detector.yolo_detector import load_yolo_model, detect_obstacles
+from src.tracker.tracker import track_objects
 
-def main():
-    # 输入你的视频文件路径
-    left_video_path = "path/to/left_video.mp4"
-    right_video_path = "path/to/right_video.mp4"
+# 路径设置
+left_img_path = 'data/kitti2015/training/image_2/000000_10.png'  # 替换为存在的图像路径
+right_img_path = 'data/kitti2015/training/image_3/000000_10.png'  # 替换为存在的图像路径
+depth_path = 'data/kitti2015/training/disp_noc_0/000000_10.png'  # 示例深度图路径
 
-    # 创建数据加载器和检测器
-    data_loader = StereoDataLoader(left_video_path, right_video_path)
-    detector = YOLOv5Detector()
+# 加载图像数据
+img_left, img_right = load_kitti_data(left_img_path, right_img_path)
 
-    while True:
-        left_frame, right_frame = data_loader.load_frames()
+# 计算深度图
+depth_map = compute_depth_map(img_left, img_right)
 
-        if left_frame is None or right_frame is None:
-            print("视频读取完毕")
-            break
+# 加载 YOLOv8 模型（假设已经有权重文件）
+yolo_model = load_yolo_model('yolov8s.pt')  # 使用 YOLOv8 的小模型权重文件 yolov8s.pt
 
-        # 使用YOLOv5进行物体检测
-        left_detected = detector.detect(left_frame)
-        right_detected = detector.detect(right_frame)
+# 检测障碍物
+detections, img_with_boxes = detect_obstacles(img_left, yolo_model)
 
-        # 显示检测结果
-        cv2.imshow("Left Frame", left_detected)
-        cv2.imshow("Right Frame", right_detected)
+# 显示深度图和检测到的障碍物
+cv2.imshow('Depth Map', depth_map)
+cv2.imshow('Obstacle Detection', img_with_boxes)
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    # 释放资源
-    data_loader.release()
-    cv2.destroyAllWindows()
-
-if __name__ == "__main__":
-    main()
+# 等待用户按键关闭窗口
+cv2.waitKey(0)
+cv2.destroyAllWindows()

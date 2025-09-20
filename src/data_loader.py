@@ -1,36 +1,23 @@
 import cv2
 import os
-import numpy as np
 
-class StereoDataLoader:
-    def __init__(self, left_video_path, right_video_path):
-        """
-        初始化数据加载器
-        :param left_video_path: 左摄像头视频路径
-        :param right_video_path: 右摄像头视频路径
-        """
-        self.left_cap = cv2.VideoCapture(left_video_path)
-        self.right_cap = cv2.VideoCapture(right_video_path)
+def load_kitti_data(left_img_path, right_img_path):
+    """
+    加载 KITTI 数据集中左右图像对。
+    """
+    img_left = cv2.imread(left_img_path, cv2.IMREAD_COLOR)
+    img_right = cv2.imread(right_img_path, cv2.IMREAD_COLOR)
+    
+    if img_left is None or img_right is None:
+        raise ValueError(f"Failed to load images from {left_img_path} and {right_img_path}")
+    
+    return img_left, img_right
 
-    def load_frames(self):
-        """
-        从双目视频中加载一帧数据
-        :return: 左右摄像头的图像对
-        """
-        ret_left, left_frame = self.left_cap.read()
-        ret_right, right_frame = self.right_cap.read()
-
-        if not ret_left or not ret_right:
-            return None, None
-
-        # 进行一些基本的预处理，如调整尺寸、转换为灰度图等
-        left_frame = cv2.resize(left_frame, (640, 480))
-        right_frame = cv2.resize(right_frame, (640, 480))
-
-        return left_frame, right_frame
-
-    def release(self):
-        """释放视频资源"""
-        self.left_cap.release()
-        self.right_cap.release()
-
+def load_ground_truth(depth_path):
+    """
+    加载深度图。
+    """
+    depth_map = cv2.imread(depth_path, cv2.IMREAD_UNCHANGED)
+    if depth_map is None:
+        raise ValueError(f"Failed to load depth map from {depth_path}")
+    return depth_map
