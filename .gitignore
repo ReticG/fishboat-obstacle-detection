@@ -30,6 +30,8 @@ data/raw/
 data/processed/
 data/raw_video/
 
+*.zip
+
 # Results folder
 experiments/results/
 
